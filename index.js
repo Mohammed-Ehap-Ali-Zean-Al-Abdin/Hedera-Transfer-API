@@ -53,7 +53,7 @@ app.post("/account/transaction", async (req, res) => {
             return res.status(400).json({ error: "Missing required fields" });
         }
 
-        const client = createClient(accountId, privateKey);
+        const client = createClient(accountId, PrivateKey.fromString(privateKey));
 
         // Execute transfer
         const tx = await new TransferTransaction()
