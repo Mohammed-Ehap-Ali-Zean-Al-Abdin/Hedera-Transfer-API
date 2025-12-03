@@ -87,25 +87,27 @@ app.post("/account/verify", async (req, res) => {
   try {
     const { accountId, privateKey } = req.body;
 
-    if (!accountId || !privateKey)
+    if (!accountId || !privateKey) {
       return res.status(400).json({
         valid: false,
         message: "accountId and privateKey are required"
       });
+    }
 
     const client = Client.forTestnet();
     client.setOperator(accountId, PrivateKey.fromStringDer(privateKey));
 
-    // Try a simple balance query (best way to verify credentials)
-    const balance = await new AccountBalanceQuery()
+    // THIS forces signature check
+    const info = await new AccountInfoQuery()
       .setAccountId(accountId)
       .execute(client);
 
     return res.json({
       valid: true,
       message: "Credentials are correct",
-      balance: `${balance.hbars.toString()}`
+      publicKeyOnChain: info.key.toString(),
     });
+
   } catch (error) {
     return res.status(401).json({
       valid: false,
