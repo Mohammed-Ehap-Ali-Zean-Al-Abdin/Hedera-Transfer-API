@@ -53,7 +53,7 @@ app.post("/account/transaction", async (req, res) => {
             return res.status(400).json({ error: "Missing required fields" });
         }
 
-        const client = createClient(accountId, PrivateKey.fromString(privateKey));
+        const client = createClient(accountId, PrivateKey.fromStringDer(privateKey));
 
         // Execute transfer
         const tx = await new TransferTransaction()
@@ -94,7 +94,7 @@ app.post("/account/verify", async (req, res) => {
       });
 
     const client = Client.forTestnet();
-    client.setOperator(accountId, PrivateKey.fromString(privateKey));
+    client.setOperator(accountId, PrivateKey.fromStringDer(privateKey));
 
     // Try a simple balance query (best way to verify credentials)
     const balance = await new AccountBalanceQuery()
