@@ -3,7 +3,8 @@ import {
     Client, 
     AccountBalanceQuery, 
     TransferTransaction, 
-    Hbar 
+    Hbar, 
+    PrivateKey
 } from "@hashgraph/sdk";
 
 const app = express();
@@ -79,6 +80,39 @@ app.post("/account/transaction", async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
+});
+
+// 4) Verify Account Credentials
+app.post("/account/verify", async (req, res) => {
+  try {
+    const { accountId, privateKey } = req.body;
+
+    if (!accountId || !privateKey)
+      return res.status(400).json({
+        valid: false,
+        message: "accountId and privateKey are required"
+      });
+
+    const client = Client.forTestnet();
+    client.setOperator(accountId, PrivateKey.fromString(privateKey));
+
+    // Try a simple balance query (best way to verify credentials)
+    const balance = await new AccountBalanceQuery()
+      .setAccountId(accountId)
+      .execute(client);
+
+    return res.json({
+      valid: true,
+      message: "Credentials are correct",
+      balance: `${balance.hbars.toString()}`
+    });
+  } catch (error) {
+    return res.status(401).json({
+      valid: false,
+      message: "Invalid accountId or privateKey",
+      error: error.message
+    });
+  }
 });
 
 // Run server
