@@ -4,7 +4,8 @@ import {
     AccountBalanceQuery, 
     TransferTransaction, 
     Hbar, 
-    PrivateKey
+    PrivateKey,
+    AccountInfoQuery
 } from "@hashgraph/sdk";
 
 const app = express();
