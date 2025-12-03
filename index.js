@@ -98,7 +98,7 @@ app.post("/account/verify", async (req, res) => {
     const client = Client.forTestnet();
     client.setOperator(accountId, PrivateKey.fromStringDer(privateKey));
 
-    // THIS forces signature check
+    // This query forces signature check
     const info = await new AccountInfoQuery()
       .setAccountId(accountId)
       .execute(client);
@@ -110,6 +110,17 @@ app.post("/account/verify", async (req, res) => {
     });
 
   } catch (error) {
+    
+    // ====== Special Case: Balance = 0 but Key is Correct ======
+    if (error.message?.includes("INSUFFICIENT_PAYER_BALANCE")) {
+      return res.json({
+        valid: true,
+        message: "Credentials are correct but account has insufficient balance",
+        warning: "Account is valid but empty (0 HBAR)",
+      });
+    }
+
+    // ====== Any Other Error Means Invalid ======
     return res.status(401).json({
       valid: false,
       message: "Invalid accountId or privateKey",
