@@ -5,7 +5,7 @@ import {
     TransferTransaction, 
     Hbar, 
     PrivateKey,
-    AccountInfoQuery
+    AccountInfoQuery,
 } from "@hashgraph/sdk";
 
 const app = express();
@@ -25,21 +25,42 @@ app.get("/", (req, res) => {
     res.json({ status: "Server is running", ok: true });
 });
 
-// 2) Get Account Balance
+// Get Account Balance with Hedera Mirror Node Exchange Rate
 app.get("/account/balance/:id", async (req, res) => {
     try {
         const { id } = req.params;
 
         const client = Client.forTestnet();
 
+        // ===== Get Account Balance =====
         const balance = await new AccountBalanceQuery()
             .setAccountId(id)
             .execute(client);
 
+        const hbarBalanceStr = balance.hbars.toString();       // string
+        const hbarBalanceNum = parseFloat(balance.hbars.toString()); // number
+
+        // ===== Get current exchange rate from Mirror Node =====
+        const rateResponse = await fetch("https://testnet.mirrornode.hedera.com/api/v1/network/exchangerate");
+        const rateData = await rateResponse.json();
+
+        const { cent_equivalent, hbar_equivalent } = rateData.current_rate;
+
+        // ===== Calculate transaction fee in HBAR =====
+        const txFeeUsd = 0.00010; // USD
+        const txFeeCents = txFeeUsd * 100; // convert USD to cents
+        const txFeeHbar = (txFeeCents / cent_equivalent) * hbar_equivalent;
+
+        const hbarBalanceFormatted = `${hbarBalanceStr}`;
+        const txFeeHbarFormatted = Number(txFeeHbar.toFixed(6));
+
         res.json({
             accountId: id,
-            hbars: balance.hbars.toString(),
+            hbars: hbarBalanceFormatted,
+            transactionFeeHbar: txFeeHbarFormatted,
+            balance: hbarBalanceNum
         });
+
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -67,7 +88,8 @@ app.post("/account/transaction", async (req, res) => {
 
         // HashScan link
         const hashscanUrl = `https://hashscan.io/testnet/transaction/${transactionId}`;
-
+        // Execution time
+        const executionTime = new Date().toISOString();
         res.json({
             status: "Transfer Success",
             from: accountId,
@@ -75,6 +97,7 @@ app.post("/account/transaction", async (req, res) => {
             amount: amount,
             transactionId: transactionId,
             hashscan: hashscanUrl,
+            executionTime: executionTime,
             receipt: receipt, // full JSON receipt
         });
 
