@@ -8,7 +8,7 @@ A powerful and straightforward RESTful API built to simplify and streamline the 
 - **Transaction Status:** Endpoints to retrieve the status and details of executed transfers.
 - **Secure Configuration:** Manages private keys and network settings via environment variables (`.env`).
 - **Clean REST Architecture:** Easy to integrate with any client application (web, mobile, backend).
-
+---
 # 🛠️ Getting Started
 Follow these steps to get your local copy up and running for development and testing.
 
@@ -53,6 +53,7 @@ npm start
 # or (for development with auto-reload, if configured)
 # npm run dev
 ```
+---
 The API should now be running at `http://localhost:<PORT>` (e.g., `http://localhost:3000`).
 
 ## 🔗 API Endpoints
