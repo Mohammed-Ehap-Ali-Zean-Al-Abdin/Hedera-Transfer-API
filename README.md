@@ -82,6 +82,15 @@ The API is versioned under `/api/v1`.
   "network": "TESTNET"
 }
 ```
+---
+### 🧩 Integrations and Client Examples
+
+This powerful REST API is designed to be easily consumed by various client applications. Below are examples of projects and clients that utilize these endpoints:
+
+| Project Name | Type | Description | Repository |
+| :--- | :--- | :--- | :--- |
+| **Hedera Transfer App** | Frontend Web/Mobile Client | A client application built to demonstrate and utilize this API's endpoints for performing HBAR and token transfers in a user-friendly interface. | [mhmdwaelanwr/Hedera-Transfer-App](https://github.com/mhmdwaelanwr/Hedera-Transfer-App.git) |
+---
 ## 🤝 Contributing
 We welcome community contributions! If you have suggestions for new features, bug fixes, or improvements, please follow these steps:
 1. Fork the Project
