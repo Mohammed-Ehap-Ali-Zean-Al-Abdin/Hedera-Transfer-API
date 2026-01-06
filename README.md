@@ -57,6 +57,7 @@ npm start
 The API should now be running at `http://localhost:<PORT>` (e.g., `http://localhost:3000`).
 
 ## 🔗 API Endpoints
+<<<<<<< main
 
 The API provides the following endpoints:
 
@@ -67,6 +68,7 @@ The API provides the following endpoints:
 | POST | /account/transaction | Initiates an HBAR transfer from one Hedera account to another. Requires sender's accountId and privateKey. | json { "accountId": "0.0.12345", "privateKey": "302e020100...", "amount": 10.5, "receiverAccountId": "0.0.67890" }  | json { "status": "Transfer Success", "from": "0.0.12345", "to": "0.0.67890", "amount": 10.5, "transactionId": "0.0.12345@1678886000.123456789", "hashscan": "https://hashscan.io/testnet/transaction/...", "executionTime": "2023-03-15T10:00:00.000Z", "receipt": { "status": { "_code": 22 }, "accountId": { "shard": 0, "realm": 0, "num": 12345 } } }  |
 | POST | /account/verify | Verifies the validity of a Hedera Account ID and its corresponding Private Key. | json { "accountId": "0.0.12345", "privateKey": "302e020100..." }  | json { "valid": true, "message": "Credentials are correct", "publicKeyOnChain": "302a300506..." }  <br> OR <br> json { "valid": true, "message": "Credentials are correct but account has insufficient balance", "warning": "Account is valid but empty (0 HBAR)" }  <br> OR <br> json { "valid": false, "message": "Invalid accountId or privateKey", "error": "NODE_PRECHECK_ACCOUNT_DOES_NOT_EXIST" }  |
 
+>>>>>>> main
 ### 🧩 Integrations and Client Examples
 
 This API is designed to be easily consumed by various client applications. An example project that utilizes these endpoints is:
