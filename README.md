@@ -34,7 +34,8 @@ Follow these steps to get your local copy up and running for development and tes
 1.  **Clone the repository:**`git clone https://github.com/mhmdwaelanwr/Hedera-Transfer-API.git
 cd Hedera-Transfer-API
 `
-2.  **Install dependencies:**`npm install
+2.  **Install dependencies:**
+# npm install
 # or
 # yarn install
 # or
