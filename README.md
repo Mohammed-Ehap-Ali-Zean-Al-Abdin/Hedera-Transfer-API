@@ -83,7 +83,7 @@ The API is versioned under `/api/v1`.
   "network": "TESTNET"
 }
 ```
----
+----
 ### 🧩 Integrations and Client Examples
 
 This powerful REST API is designed to be easily consumed by various client applications. Below are examples of projects and clients that utilize these endpoints:
